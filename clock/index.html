@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D Clock </title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="clock-wrapper">
+    <div class="clock">
+      <img src="101.jpg" class="center-image" alt="center image">
+      <div class="hand hour"></div>
+      <div class="hand minute"></div>
+      <div class="hand second"></div>
+    <div class="numbers">
+      <span>1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>5</span>
+      <span>6</span>
+      <span>7</span>
+      <span>8</span>
+      <span>9</span>
+      <span>10</span>
+      <span>11</span>
+      <span>12</span>
+    </div>
+    <div class="digital-time" id="digitalTime"></div>
+    <!-- Digital clock moved below the analog clock -->
+    </div> <!-- Close .numbers and .clock -->
+    <div class="digital-time" id="digitalTime"></div>
+    <script>
+        function updateClockToIST() {
+            // Get current time in IST (UTC+5:30)
+            const now = new Date();
+            // IST offset in minutes
+            const istOffset = 5.5 * 60;
+            // Local time offset in minutes
+            const localOffset = now.getTimezoneOffset();
+            // IST time in ms
+            const istTime = new Date(now.getTime() + (istOffset + localOffset) * 60000);
+
+            const hours = istTime.getHours();
+            const minutes = istTime.getMinutes();
+            const seconds = istTime.getSeconds();
+
+            // Analog hands
+            const hourDeg = ((hours % 12) + minutes / 60) * 30;
+            const minuteDeg = (minutes + seconds / 60) * 6;
+            const secondDeg = seconds * 6;
+
+            document.querySelector('.hand.hour').style.transform = `rotate(${hourDeg}deg)`;
+            document.querySelector('.hand.minute').style.transform = `rotate(${minuteDeg}deg)`;
+            document.querySelector('.hand.second').style.transform = `rotate(${secondDeg}deg)`;
+
+            // Digital time
+            const pad = n => n.toString().padStart(2, '0');
+            document.getElementById('digitalTime').textContent =
+                `${pad(hours)}:${pad(minutes)}:${pad(seconds)} IST`;
+        }
+
+        setInterval(updateClockToIST, 1000);
+        updateClockToIST();
+    </script>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
